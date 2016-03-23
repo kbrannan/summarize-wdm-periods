@@ -11,7 +11,7 @@ FILES
 <FILE>  <UN#>***<----FILE NAME------------------------------------------------->
 MESSU      24   bigelk.ech
            91   bigelk.out
-WDM2       26   bigelkwqupdt.wdm
+WDM1       26   bigelkwqupdt.wdm
            50   met-wdm.out
 END FILES
  
@@ -75,10 +75,10 @@ END PLTGEN
 EXT SOURCES
 <-Volume-> <Member> SsysSgap<--Mult-->Tran <-Target vols> <-Grp> <-Member-> ***
 <Name>   x <Name> x tem strg<-factor->strg <Name>   x   x        <Name> x x ***
-WDM2    31 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   1
-WDM2    11 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   2
-WDM2    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   3
-WDM2    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   4
+WDM1    31 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   1
+WDM1    11 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   2
+WDM1    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   3
+WDM1    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   4
 END EXT SOURCES
 
 END RUN
