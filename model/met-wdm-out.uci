@@ -1,0 +1,87 @@
+RUN
+ 
+GLOBAL
+  Big Elk Creek Hydrology
+  START       1995/10/01 00:00  END    2010/12/31 24:00
+  RUN INTERP OUTPT LEVELS    3    0
+  RESUME     0 RUN     1                          UNITS    1
+END GLOBAL
+ 
+FILES
+<FILE>  <UN#>***<----FILE NAME------------------------------------------------->
+MESSU      24   bigelk.ech
+           91   bigelk.out
+WDM2       26   bigelkwqupdt.wdm
+           50   met-wdm.out
+END FILES
+ 
+OPN SEQUENCE
+    INGRP              INDELT 01:00
+      PLTGEN     001
+    END INGRP
+END OPN SEQUENCE
+ 
+
+PLTGEN
+  PLOTINFO
+  <-range><fil><npt><nmn><lab><pyr><piv><typ> ***
+    # -  # FILE  NPT  NMN LABL  PYR PIVL TYPE ***
+  001        50    0    5    0    9   24    1
+  END PLOTINFO
+  
+  GEN-LABELS
+  <-range><--------------- title ----------------> ***
+    # -  #  General Title                          ***
+    1       Met WDM Output
+  END GEN-LABELS
+  
+  SCALING
+  <-range><--ymin--><--ymax--><--ivlin-><-thresh-> ***
+    # -  #      YMIN      YMAX     IVLIN    THRESH ***
+    1    0               1E+12        30   -1.0E32    
+  END SCALING
+  
+  CURV-DATA
+  <-range>    <-----label----><lin><int><col> <tr> ***
+              Curve label      Line Intg  Col Tran ***
+    # -  #                     type  eqv code code ***
+  001         OR350145 PREC       0    0    1 SUM
+  END CURV-DATA
+
+  CURV-DATA
+  <-range>    <-----label----><lin><int><col> <tr> ***
+              Curve label      Line Intg  Col Tran ***
+    # -  #                     type  eqv code code ***
+  001         OR358182 PREC       0    0    1 SUM
+  END CURV-DATA
+
+  CURV-DATA
+  <-range>    <-----label----><lin><int><col> <tr> ***
+              Curve label      Line Intg  Col Tran ***
+    # -  #                     type  eqv code code ***
+  001         OR350145 PEVT       0    0    1 SUM
+  END CURV-DATA
+
+  CURV-DATA
+  <-range>    <-----label----><lin><int><col> <tr> ***
+              Curve label      Line Intg  Col Tran ***
+    # -  #                     type  eqv code code ***
+  001         OR358182 PEVT       0    0    1 SUM
+  END CURV-DATA
+END PLTGEN
+
+
+ 
+EXT SOURCES
+<-Volume-> <Member> SsysSgap<--Mult-->Tran <-Target vols> <-Grp> <-Member-> ***
+<Name>   x <Name> x tem strg<-factor->strg <Name>   x   x        <Name> x x ***
+*** Met Seg OR350145
+WDM2    31 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   1
+PLTGEN   1     INPUT  MEAN   1
+WDM2    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   3
+*** Met Seg OR358182
+WDM2    11 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   2
+WDM2    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   4
+END EXT SOURCES
+
+END RUN
