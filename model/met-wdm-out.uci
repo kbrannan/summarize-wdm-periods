@@ -26,7 +26,7 @@ PLTGEN
   PLOTINFO
   <-range><fil><npt><nmn><lab><pyr><piv><typ> ***
     # -  # FILE  NPT  NMN LABL  PYR PIVL TYPE ***
-  001        50    0    5    0    9   24    1
+  001        50    0    4    0    9   24    1
   END PLOTINFO
   
   GEN-LABELS
@@ -75,12 +75,9 @@ END PLTGEN
 EXT SOURCES
 <-Volume-> <Member> SsysSgap<--Mult-->Tran <-Target vols> <-Grp> <-Member-> ***
 <Name>   x <Name> x tem strg<-factor->strg <Name>   x   x        <Name> x x ***
-*** Met Seg OR350145
 WDM2    31 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   1
-PLTGEN   1     INPUT  MEAN   1
-WDM2    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   3
-*** Met Seg OR358182
 WDM2    11 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   2
+WDM2    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   3
 WDM2    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   4
 END EXT SOURCES
 
