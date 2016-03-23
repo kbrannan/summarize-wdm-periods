@@ -5,15 +5,24 @@
 ## working directory 
 chr.sum.wdm.periods.dir <- "M:/Presentations/2016-02-09 Bacteria TWG 17/tables-charts-figures/summarize-wdm-periods"
 
-## readin uci file
+## met wdm file names
+chr.cur.wdm <- "bigelk_in.wdm"
+chr.upd.wdm <- "bigelkwqupdt.wdm"
+
+## read in uci file
 chr.uci <- scan(
   file = paste0(chr.sum.wdm.periods.dir, "/model/met-wdm-out.uci"), 
   what = "character", sep = "\n")
-## find line with wdm file name
-gsub(" [aA-zZ0-9]{1,}\\.wdm"," this.wdm", chr.uci[min(grep("WDM1", chr.uci))])
 
-
-## rund hspf
+## run and read for original met-wdm
+##
+## find line with wdm file name 
+chr.uci.org <- chr.uci
+chr.uci.org[min(grep("WDM1", chr.uci.org))] <- 
+  gsub(" [aA-zZ0-9]{1,}\\.wdm",paste0(" ", chr.cur.wdm), 
+       chr.uci[min(grep("WDM1", chr.uci.org))])
+cat(chr.uci.org, 
+    file = paste0(chr.sum.wdm.periods.dir, "/model/met-wdm-out.uci"), 
+    sep = "\n" )
+## run hspf
 shell(cmd=paste0(chr.sum.wdm.periods.dir,"/model/winhspf.bat"))
-
-list.files(path = chr.sum.wdm.periods.dir)
