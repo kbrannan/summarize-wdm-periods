@@ -62,3 +62,5 @@ shell(cmd = paste0("cd ", chr.sum.wdm.periods.dir,
 ## read plotgen output
 df.upd.met.wdm <- rpltgen(chr.dir = paste0(chr.sum.wdm.periods.dir, "/model"),
                           chr.file = paste0(gsub("\\.","_",chr.upd.wdm), ".out"))
+## clean up
+rm(list=ls(pattern="chr\\.uci.*"))
