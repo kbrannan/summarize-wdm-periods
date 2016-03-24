@@ -66,5 +66,27 @@ df.upd.met.wdm <- rpltgen(chr.dir = paste0(chr.sum.wdm.periods.dir, "/model"),
 rm(list=ls(pattern="chr\\.uci.*"))
 
 ## create facors for months and years
-format(head(df.org.met.wdm$tmp.date), "%Y")
-format(head(df.org.met.wdm$tmp.date), "%b")
+## original
+chr.years <- unique(format(df.org.met.wdm$tmp.date, "%Y"))
+chr.years <- chr.years[order(chr.years)]
+chr.months <- 
+  cbind(unique(format(df.org.met.wdm$tmp.date, "%b")), 
+           unique(format(df.org.met.wdm$tmp.date, "%m")))
+chr.months <- chr.months[order(chr.months[,2]), ][,1]
+df.org.met.wdm <- 
+  data.frame(df.org.met.wdm,
+             year = factor(format(df.org.met.wdm$tmp.date, "%Y"), chr.years),
+             month = factor(format(df.org.met.wdm$tmp.date, "%b"), chr.months))
+rm(chr.years, chr.months)
+## updated
+chr.years <- unique(format(df.upd.met.wdm$tmp.date, "%Y"))
+chr.years <- chr.years[order(chr.years)]
+chr.months <- 
+  cbind(unique(format(df.upd.met.wdm$tmp.date, "%b")), 
+        unique(format(df.upd.met.wdm$tmp.date, "%m")))
+chr.months <- chr.months[order(chr.months[,2]), ][,1]
+df.upd.met.wdm <- 
+  data.frame(df.upd.met.wdm,
+             year = factor(format(df.upd.met.wdm$tmp.date, "%Y"), chr.years),
+             month = factor(format(df.upd.met.wdm$tmp.date, "%b"), chr.months))
+rm(chr.years, chr.months)
