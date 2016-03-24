@@ -5,6 +5,9 @@
 ## working directory 
 chr.sum.wdm.periods.dir <- "M:/Presentations/2016-02-09 Bacteria TWG 17/tables-charts-figures/summarize-wdm-periods"
 
+## set working directory
+setwd(chr.sum.wdm.periods.dir)
+
 ## met wdm file names
 chr.cur.wdm <- "bigelk_in.wdm"
 chr.upd.wdm <- "bigelkwqupdt.wdm"
@@ -25,4 +28,4 @@ cat(chr.uci.org,
     file = paste0(chr.sum.wdm.periods.dir, "/model/met-wdm-out.uci"), 
     sep = "\n" )
 ## run hspf
-shell(cmd=paste0(chr.sum.wdm.periods.dir,"/model/winhspf.bat"))
+shell(cmd=paste0("cd ", chr.sum.wdm.periods.dir,"/model & winhspf.bat"))
