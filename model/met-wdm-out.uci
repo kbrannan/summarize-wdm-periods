@@ -11,7 +11,7 @@ FILES
 <FILE>  <UN#>***<----FILE NAME------------------------------------------------->
 MESSU      24   bigelk.ech
            91   bigelk.out
-WDM1       26   bigelkwqupdt.wdm
+WDM1       26   bigelk_in.wdm
            50   met-wdm.out
 END FILES
  
@@ -21,7 +21,6 @@ OPN SEQUENCE
     END INGRP
 END OPN SEQUENCE
  
-
 PLTGEN
   PLOTINFO
   <-range><fil><npt><nmn><lab><pyr><piv><typ> ***
@@ -47,21 +46,18 @@ PLTGEN
     # -  #                     type  eqv code code ***
   001         OR350145 PREC       0    0    1 SUM
   END CURV-DATA
-
   CURV-DATA
   <-range>    <-----label----><lin><int><col> <tr> ***
               Curve label      Line Intg  Col Tran ***
     # -  #                     type  eqv code code ***
   001         OR358182 PREC       0    0    1 SUM
   END CURV-DATA
-
   CURV-DATA
   <-range>    <-----label----><lin><int><col> <tr> ***
               Curve label      Line Intg  Col Tran ***
     # -  #                     type  eqv code code ***
   001         OR350145 PEVT       0    0    1 SUM
   END CURV-DATA
-
   CURV-DATA
   <-range>    <-----label----><lin><int><col> <tr> ***
               Curve label      Line Intg  Col Tran ***
@@ -69,8 +65,6 @@ PLTGEN
   001         OR358182 PEVT       0    0    1 SUM
   END CURV-DATA
 END PLTGEN
-
-
  
 EXT SOURCES
 <-Volume-> <Member> SsysSgap<--Mult-->Tran <-Target vols> <-Grp> <-Member-> ***
@@ -80,5 +74,4 @@ WDM1    11 PREC     ENGL              SAME PLTGEN   1     INPUT  MEAN   2
 WDM1    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   3
 WDM1    16 PEVT     ENGL              SAME PLTGEN   1     INPUT  MEAN   4
 END EXT SOURCES
-
 END RUN
