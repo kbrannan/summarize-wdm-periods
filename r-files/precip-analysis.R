@@ -35,6 +35,18 @@ df.monthly.means <-
 rm(df.monthly.means.years.org, df.monthly.means.org, 
    df.monthly.means.years.upd, df.monthly.means.upd)
 
+## put all data into single data.frame with form
+## var        date     month  year    src    val
+## ave_ann    NA       NA     NA      factor numerical
+## sum_ann    NA       NA     factor  factor numerical
+## ave_mon    NA       factor NA      factor numerical
+## sum_mon    NA       factor factor  factor numerical
+## sum_daily  POSIXct  factor facor   factor numerical
+##
+## month as abrev Jan through Dec
+## year as 4-digits
+## src either org or upd
+
 ## plots 
 ##
 ## daily values
