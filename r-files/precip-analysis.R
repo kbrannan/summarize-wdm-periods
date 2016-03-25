@@ -1,7 +1,6 @@
 ## load packages
 library(doBy, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
-library('dplyr-master')
 
 # average annual
 df.ann.means.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
@@ -46,6 +45,21 @@ rm(df.monthly.means.years.org, df.monthly.means.org,
 ## month as abrev Jan through Dec
 ## year as 4-digits
 ## src either org or upd
+## ave annual
+df.prec <- data.frame(var = "ave_ann",
+                      date = NA,
+                      month = NA,
+                      year = NA,
+                      src = c("org","upd"),
+                      val = df.ann.means[1, ])
+## sum annual
+df.prec <- data.frame(df.prec,
+                      var = "sum_ann",
+                      date = NA,
+                      month = NA,
+                      year = 
+                      src = c("org","upd"),
+                      val = df.ann.means[1, ])
 
 ## plots 
 ##
