@@ -1,8 +1,7 @@
-
-
 ## load packages
 library(doBy, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
+library('dplyr-master')
 
 # average annual
 df.ann.means.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
@@ -35,3 +34,22 @@ df.monthly.means <-
     OR358182.PREC.upd = df.monthly.means.upd$OR358182.PREC.sum.mean)
 rm(df.monthly.means.years.org, df.monthly.means.org, 
    df.monthly.means.years.upd, df.monthly.means.upd)
+
+## plots 
+##
+## daily values
+p.daily.prec <- ggplot(data = df.upd.met.wdm)
+p.daily.prec <- p.daily.prec + geom_segment(aes(x = tmp.date, xend = tmp.date,
+                                     y = 0, yend = OR350145.PREC))
+p.daily.prec <- p.daily.prec + 
+  geom_segment(data = df.org.met.wdm,
+               aes(x = tmp.date, xend = tmp.date,
+                   y = 0, yend = OR350145.PREC), 
+               color = "red")
+plot(p.daily.prec)
+
+## average annual
+p.ave.ann.prec <- ggplot(data = df.ann.means)
+p.ave.ann.prec <- p.ave.ann.prec + geom_bar()
+plot(p.ave.ann.prec)
+
