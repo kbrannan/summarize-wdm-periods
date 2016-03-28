@@ -5,26 +5,29 @@ library(tidyr, quietly = TRUE)
 library(dplyr)
 
 ## create single long format data frmae of met data
-names(df.org.met.wdm)
-
-
-
-junk <- gather(df.org.met.wdm, key = src, val=value, OR350145.PREC, OR358182.PREC, OR350145.PEVT, OR358182.PEVT)
-junk <- data.frame(junk,
-                       station=gsub("\\.[aA-zZ]{1,}","", junk$src),
-                       par=gsub("^.*\\.","", junk$src))
-junk <- junk[, -4]
-
-junk2 <- gather(junk, key = id, value = obs, value)
-junk2 <- junk2[,-2]
-
-lil.junk <- head(junk,25)
-
-gsub("^.*\\.","", lil.junk$src)
-
-lil.junk <- data.frame(lil.junk,
-                       station=gsub("\\.[aA-zZ]{1,}","", lil.junk$src),
-                       par=gsub("^.*\\.","", lil.junk$src))
+## gather data for orginial period
+df.tmp <- gather(df.org.met.wdm, key = src, val=value, OR350145.PREC, OR358182.PREC, OR350145.PEVT, OR358182.PEVT)
+df.tmp <- data.frame(df.tmp,
+                       station=gsub("\\.[aA-zZ]{1,}","", df.tmp$src),
+                       par=gsub("^.*\\.","", df.tmp$src), 
+                     period = "org")
+df.tmp <- df.tmp[, -4]
+df.tmp <- gather(df.tmp, key = id, value = obs, value)
+df.tmp <- df.tmp[,-7]
+df.data <- df.tmp
+rm(df.tmp)
+## gather data for updated period
+df.tmp <- gather(df.upd.met.wdm, key = src, val=value, OR350145.PREC, OR358182.PREC, OR350145.PEVT, OR358182.PEVT)
+df.tmp <- data.frame(df.tmp,
+                     station=gsub("\\.[aA-zZ]{1,}","", df.tmp$src),
+                     par=gsub("^.*\\.","", df.tmp$src), 
+                     period = "upd")
+df.tmp <- df.tmp[, -4]
+df.tmp <- gather(df.tmp, key = id, value = obs, value)
+df.tmp <- df.tmp[,-7]
+## put org and upd periods together
+df.data <- rbind(df.data,df.tmp)
+rm(df.tmp)
 
 # average annual
 df.ann.means.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
