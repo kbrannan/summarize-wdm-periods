@@ -2,7 +2,9 @@
 library(doBy, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
 library(tidyr, quietly = TRUE)
-library(dplyr)
+library(dplyr, quietly = TRUE)
+
+
 
 ## create single long format data frmae of met data
 ## gather data for orginial period
@@ -79,22 +81,22 @@ df.prec <- rbind(cbind(var = "ann_ave", date = NA, month = NA, year = NA,
                  cbind(var = "day_sum", df.data)
 )
 
+## changing order of period factor levels so upd will be behind org
+df.prec$period <- factor(as.character(df.prec$period),
+                         levels = c("upd", "org"))
 ## clean up
 rm(list=ls(pattern = "^df\\.")[-grep("df.prec",ls(pattern = "^df\\."))])
 
 ## plots 
 ##
-p.prec <- ggplot(data=df.prec)
 ## daily values
-p.daily.prec <- ggplot(data = df.upd.met.wdm)
-p.daily.prec <- p.daily.prec + geom_segment(aes(x = tmp.date, xend = tmp.date,
-                                     y = 0, yend = OR350145.PREC))
-p.daily.prec <- p.daily.prec + 
-  geom_segment(data = df.org.met.wdm,
-               aes(x = tmp.date, xend = tmp.date,
-                   y = 0, yend = OR350145.PREC), 
-               color = "red")
-plot(p.daily.prec)
+p.prec.daily <- ggplot(data = df.prec[df.prec$var == "day_sum" &
+                                        df.prec$par == "PREC", ])
+
+p.prec.daily <- p.prec.daily + geom_segment(aes(x = date, xend = date, 
+                                 y = 0, yend = val, color = period)) +
+  facet_grid(~station)
+plot(p.prec.daily)
 
 ## average annual
 p.ave.ann.prec <- ggplot(data = df.ann.means)
