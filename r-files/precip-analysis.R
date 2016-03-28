@@ -95,7 +95,7 @@ p.prec.daily <- ggplot(data = df.prec[df.prec$var == "day_sum" &
 
 p.prec.daily <- p.prec.daily + geom_segment(aes(x = date, xend = date, 
                                  y = 0, yend = val, color = period)) +
-  facet_grid(~station)
+  facet_wrap(~station, ncol = 1, nrow = 2)
 plot(p.prec.daily)
 
 ## average annual
