@@ -1,6 +1,30 @@
 ## load packages
 library(doBy, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
+library(tidyr, quietly = TRUE)
+library(dplyr)
+
+## create single long format data frmae of met data
+names(df.org.met.wdm)
+
+
+
+junk <- gather(df.org.met.wdm, key = src, val=value, OR350145.PREC, OR358182.PREC, OR350145.PEVT, OR358182.PEVT)
+junk <- data.frame(junk,
+                       station=gsub("\\.[aA-zZ]{1,}","", junk$src),
+                       par=gsub("^.*\\.","", junk$src))
+junk <- junk[, -4]
+
+junk2 <- gather(junk, key = id, value = obs, value)
+junk2 <- junk2[,-2]
+
+lil.junk <- head(junk,25)
+
+gsub("^.*\\.","", lil.junk$src)
+
+lil.junk <- data.frame(lil.junk,
+                       station=gsub("\\.[aA-zZ]{1,}","", lil.junk$src),
+                       par=gsub("^.*\\.","", lil.junk$src))
 
 # average annual
 df.ann.means.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
@@ -13,6 +37,12 @@ df.ann.means <- data.frame(
   upd = sum((df.ann.means.upd[ ,4] / 
                sum(df.ann.means.upd[ ,4])) * df.ann.means.upd[ ,2]))
 rm(df.ann.means.org, df.ann.means.upd)
+
+## annual sums
+df.ann.sums.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
+                             data = df.org.met.wdm, FUN = c(sum))
+df.ann.sums.upd <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
+                             data = df.upd.met.wdm, FUN = c(sum))
 
 # average monthly
 df.monthly.means.years.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ month + year, 
