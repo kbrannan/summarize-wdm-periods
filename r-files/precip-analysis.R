@@ -29,43 +29,22 @@ df.tmp <- df.tmp[,-7]
 df.data <- rbind(df.data,df.tmp)
 rm(df.tmp)
 
-# average annual
-df.ann.means.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
-          data = df.org.met.wdm, FUN = c(sum, length))
-df.ann.means.upd <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
-          data = df.upd.met.wdm, FUN = c(sum, length))
-df.ann.means <- data.frame(
-  org = sum((df.ann.means.org[ ,4] / 
-               sum(df.ann.means.org[ ,4])) * df.ann.means.org[ ,2]),
-  upd = sum((df.ann.means.upd[ ,4] / 
-               sum(df.ann.means.upd[ ,4])) * df.ann.means.upd[ ,2]))
-rm(df.ann.means.org, df.ann.means.upd)
-
 ## annual sums
-df.ann.sums.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
-                             data = df.org.met.wdm, FUN = c(sum))
-df.ann.sums.upd <- summaryBy(OR350145.PREC + OR358182.PREC ~ year, 
-                             data = df.upd.met.wdm, FUN = c(sum))
+df.ann.sums <- summaryBy(obs ~ year + station + par + period,
+                         df.data, FUN = sum)
+## monthly sums
+df.mon.sums <- summaryBy(obs ~ month + year + station + par + period,
+                         df.data, FUN = sum)
 
-# average monthly
-df.monthly.means.years.org <- summaryBy(OR350145.PREC + OR358182.PREC ~ month + year, 
-                              data = df.org.met.wdm, FUN = sum)
-df.monthly.means.org <- summaryBy(OR350145.PREC.sum + OR358182.PREC.sum ~ month,
-                                  data = df.monthly.means.years.org, FUN = mean)
-
-df.monthly.means.years.upd <- summaryBy(OR350145.PREC + OR358182.PREC ~ month + year, 
-                                        data = df.upd.met.wdm, FUN = sum)
-df.monthly.means.upd <- summaryBy(OR350145.PREC.sum + OR358182.PREC.sum ~ month,
-                                  data = df.monthly.means.years.upd, FUN = mean)
-df.monthly.means <- 
-  data.frame(
-    month = df.monthly.means.org$month,
-    OR350145.PREC.org = df.monthly.means.org$OR350145.PREC.sum.mean,
-    OR358182.PREC.org = df.monthly.means.org$OR358182.PREC.sum.mean,
-    OR350145.PREC.upd = df.monthly.means.upd$OR350145.PREC.sum.mean,
-    OR358182.PREC.upd = df.monthly.means.upd$OR358182.PREC.sum.mean)
-rm(df.monthly.means.years.org, df.monthly.means.org, 
-   df.monthly.means.years.upd, df.monthly.means.upd)
+# average annual (weight by number of obs per year)
+df.tmp <- summaryBy(obs ~ year + station + par + period,
+                         df.data, FUN = c(sum,length))
+df.tmp.prod <- cbind(df.tmp, prod = df.tmp$obs.sum * df.tmp$obs.length)
+df.tmp.length <- summaryBy(obs.length ~ period + station + period + par, df.tmp, FUN = sum)
+df.tmp.un <- merge(df.tmp.prod, df.tmp.length)
+df.tmp.div <- cbind(df.tmp.un, frac= df.tmp.un$prod/df.tmp.un$obs.length.sum)
+df.ann.aves <- summaryBy(frac ~ period + station + par, df.tmp.div, FUN = sum)
+rm(list=ls(pattern="df.tmp*"))
 
 ## put all data into single data.frame with form
 ## var        date     month  year    src    val
