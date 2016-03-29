@@ -158,3 +158,16 @@ p.mon.ave.prec <- p.mon.ave.prec +
   facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
 plot(p.mon.ave.prec)
 
+## cdf of daily sum (hyetograph)
+
+
+df.tmp <- df.prec[df.prec$par == "PREC" & df.prec$var == "day_sum", ]
+df.edf.org.OR350145 <- ecdf(df.tmp[df.tmp$period == "org" &
+                                     df.tmp$station == "OR350145", "val"])
+df.edf.org.OR358182 <- ecdf(df.tmp[df.tmp$period == "org" &
+                                     df.tmp$station == "OR358182", "val"])
+df.edf.upd.OR350145 <- ecdf(df.tmp[df.tmp$period == "upd" &
+                                     df.tmp$station == "OR350145", "val"])
+df.edf.upd.OR358182 <- ecdf(df.tmp[df.tmp$period == "upd" &
+                                     df.tmp$station == "OR358182", "val"])
+
