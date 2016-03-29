@@ -82,13 +82,12 @@ df.prec <- rbind(cbind(var = "ann_ave", date = NA, month = NA, year = NA,
 )
 
 
-## need to change date back to posixct
-junk <-head(df.prec[df.prec$var == "day_sum",]$date)
-str(junk)
+## need to change date back to POSIXct
+df.prec$date <- as.POSIXct(df.prec$date, origin = "1970-01-01 00:00.00")
 
 ## changing order of period factor levels so upd will be behind org
 df.prec$period <- factor(as.character(df.prec$period),
-                         levels = c("upd", "org"))
+                         levels = c("org", "upd"))
 ## changing order of station factor levels so higher elev first
 df.prec$station <- factor(as.character(df.prec$station),
                          levels = c("OR350145", "OR358182"))
@@ -108,7 +107,12 @@ p.prec.daily <- p.prec.daily + geom_segment(aes(x = date, xend = date,
 plot(p.prec.daily)
 
 ## average annual
-p.ave.ann.prec <- ggplot(data = df.ann.means)
-p.ave.ann.prec <- p.ave.ann.prec + geom_bar()
-plot(p.ave.ann.prec)
+p.ann.ave.prec <- ggplot(data = df.prec[df.prec$var == "ann_ave" &
+                                          df.prec$par == "PREC", ])
+p.ann.ave.prec <- p.ann.ave.prec + 
+  geom_bar(aes(x = period, y = val, fill = period), stat = "identity") +
+  facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE) +
+  scale_x_discrete(breaks = c("org", "upd"), 
+                   labels = c("Orgnial", "Updated"))
+plot(p.ann.ave.prec)
 
