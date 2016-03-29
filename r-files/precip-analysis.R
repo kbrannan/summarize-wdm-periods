@@ -170,4 +170,21 @@ df.edf.upd.OR350145 <- ecdf(df.tmp[df.tmp$period == "upd" &
                                      df.tmp$station == "OR350145", "val"])
 df.edf.upd.OR358182 <- ecdf(df.tmp[df.tmp$period == "upd" &
                                      df.tmp$station == "OR358182", "val"])
+df.tmp <- cbind(df.tmp, ecdf = -1)
 
+df.tmp[df.tmp$period == "org" & df.tmp$station == "OR350145", "ecdf"] =
+  df.edf.org.OR350145(df.tmp[df.tmp$period == "org" & df.tmp$station == "OR350145", "val"])
+df.tmp[df.tmp$period == "org" & df.tmp$station == "OR358182", "ecdf"] =
+  df.edf.org.OR358182(df.tmp[df.tmp$period == "org" & df.tmp$station == "OR358182", "val"])
+df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR350145", "ecdf"] =
+  df.edf.upd.OR350145(df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR350145", "val"])
+df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR358182", "ecdf"] =
+  df.edf.upd.OR358182(df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR358182", "val"])
+
+## ecdf
+p.day.ecdf.prec <- ggplot(data = df.tmp)
+p.day.ecdf.prec <- p.day.ecdf.prec + 
+  geom_line(aes(x = val, y = ecdf, color = period)) + 
+  xlab("Precip Depth (inches)") + ylab("Probability") +
+  facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
+plot(p.day.ecdf.prec)
