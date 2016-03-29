@@ -81,9 +81,18 @@ df.prec <- rbind(cbind(var = "ann_ave", date = NA, month = NA, year = NA,
                  cbind(var = "day_sum", df.data)
 )
 
+
+## need to change date back to posixct
+junk <-head(df.prec[df.prec$var == "day_sum",]$date)
+str(junk)
+
 ## changing order of period factor levels so upd will be behind org
 df.prec$period <- factor(as.character(df.prec$period),
                          levels = c("upd", "org"))
+## changing order of station factor levels so higher elev first
+df.prec$station <- factor(as.character(df.prec$station),
+                         levels = c("OR350145", "OR358182"))
+
 ## clean up
 rm(list=ls(pattern = "^df\\.")[-grep("df.prec",ls(pattern = "^df\\."))])
 
