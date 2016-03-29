@@ -3,6 +3,7 @@ library(doBy, quietly = TRUE)
 library(ggplot2, quietly = TRUE)
 library(tidyr, quietly = TRUE)
 library(dplyr, quietly = TRUE)
+library(dgof)
 
 
 
@@ -180,6 +181,32 @@ df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR350145", "ecdf"] =
   df.edf.upd.OR350145(df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR350145", "val"])
 df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR358182", "ecdf"] =
   df.edf.upd.OR358182(df.tmp[df.tmp$period == "upd" & df.tmp$station == "OR358182", "val"])
+
+## apply ks-test
+ks.OR350145 <- ks.test(
+  x = df.tmp[df.tmp$period == "org" & 
+               df.tmp$station == "OR350145", "ecdf"],
+  y = df.tmp[df.tmp$period == "upd" & 
+               df.tmp$station == "OR350145", "ecdf"])
+ks.OR358182 <- ks.test(
+  x = df.tmp[df.tmp$period == "org" & 
+               df.tmp$station == "OR358182", "ecdf"],
+  y = df.tmp[df.tmp$period == "upd" & 
+               df.tmp$station == "OR358182", "ecdf"])
+
+
+## confidence bounds for ecdf
+
+junk <- sqrt((df.tmp[df.tmp$period == "org" & df.tmp$station == "OR350145", "ecdf"] *
+                (1 - df.tmp[df.tmp$period == "org" & df.tmp$station == "OR350145", "ecdf"]) / 
+                length(df.tmp[df.tmp$period == "org" & df.tmp$station == "OR350145", "ecdf"])))
+a <- 95
+z <- qnorm(p = ((1 - a / 100)/2), lower.tail = FALSE)
+
+df.bound <- data.frame(lower = df.tmp[df.tmp$period == "org" & df.tmp$station == "OR350145", "ecdf"] -
+                         z * junk,
+                       upper = df.tmp[df.tmp$period == "org" & df.tmp$station == "OR350145", "ecdf"] +
+                         z * junk)
 
 ## ecdf
 p.day.ecdf.prec <- ggplot(data = df.tmp)
