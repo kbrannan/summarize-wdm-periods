@@ -40,7 +40,7 @@ df.mon.sums <- summaryBy(obs ~ month + year + station + par + period,
                          df.data, FUN = sum)
 names(df.mon.sums) <- c(names(df.mon.sums)[-6], "val")
 # monthly averages
-df.mon.ave <- summaryBy(obs.sum ~ month + station + par + period,
+df.mon.ave <- summaryBy(val ~ month + station + par + period,
                         df.mon.sums, FUN = mean)
 names(df.mon.ave) <- c(names(df.mon.ave)[-5], "val")
 # average annual (weight by number of obs per year)
@@ -87,7 +87,7 @@ df.prec$date <- as.POSIXct(df.prec$date, origin = "1970-01-01 00:00.00")
 
 ## changing order of period factor levels so upd will be behind org
 df.prec$period <- factor(as.character(df.prec$period),
-                         levels = c("org", "upd"))
+                         levels = c("upd", "org"))
 ## changing order of station factor levels so higher elev first
 df.prec$station <- factor(as.character(df.prec$station),
                          levels = c("OR350145", "OR358182"))
@@ -110,9 +110,12 @@ plot(p.prec.daily)
 p.ann.ave.prec <- ggplot(data = df.prec[df.prec$var == "ann_ave" &
                                           df.prec$par == "PREC", ])
 p.ann.ave.prec <- p.ann.ave.prec + 
-  geom_bar(aes(x = period, y = val, fill = period), stat = "identity") +
+  geom_bar(aes(x = period, y = val, fill = period), 
+           stat = "identity") + ylab("Precip Depth (inches)") +
   facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE) +
   scale_x_discrete(breaks = c("org", "upd"), 
-                   labels = c("Orgnial", "Updated"))
+                   labels = c("Orgnial", "Updated")) +
+  geom_text(aes(x = period, y = 0.5 * val, label = sprintf(fmt = "%.1f",
+                                                           round(val,1))))
 plot(p.ann.ave.prec)
 
