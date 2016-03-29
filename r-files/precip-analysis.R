@@ -97,7 +97,7 @@ rm(list=ls(pattern = "^df\\.")[-grep("df.prec",ls(pattern = "^df\\."))])
 
 ## plots 
 ##
-## daily values
+## daily sum
 p.prec.daily <- ggplot(data = df.prec[df.prec$var == "day_sum" &
                                         df.prec$par == "PREC", ])
 
@@ -107,7 +107,7 @@ p.prec.daily <- p.prec.daily + geom_segment(aes(x = date, xend = date,
   xlab("") + guides(color = FALSE)
 plot(p.prec.daily)
 
-## average annual
+## annual ave
 p.ann.ave.prec <- ggplot(data = df.prec[df.prec$var == "ann_ave" &
                                           df.prec$par == "PREC", ])
 p.ann.ave.prec <- p.ann.ave.prec + 
@@ -119,4 +119,13 @@ p.ann.ave.prec <- p.ann.ave.prec +
   geom_text(aes(x = period, y = 0.5 * val, label = sprintf(fmt = "%.1f",
                                                            round(val,1))))
 plot(p.ann.ave.prec)
+
+## annual sum
+p.ann.sum.prec <- ggplot(data = df.prec[df.prec$var == "ann_sum" &
+                                          df.prec$par == "PREC", ])
+p.ann.sum.prec <- p.ann.sum.prec + 
+  geom_bar(aes(x = year, y = val, fill = period), 
+           stat = "identity", position = "dodge") + ylab("Precip Depth (inches)") +
+  facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
+plot(p.ann.sum.prec)
 
