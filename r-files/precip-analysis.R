@@ -91,6 +91,12 @@ df.prec$period <- factor(as.character(df.prec$period),
 ## changing order of station factor levels so higher elev first
 df.prec$station <- factor(as.character(df.prec$station),
                          levels = c("OR350145", "OR358182"))
+## changing order of month factor levels
+df.prec$month <- factor(as.character(df.prec$month),
+                          levels = c("Jan", "Feb", "Mar", "Apr", "May",
+                                     "Jun", "Jul", "Aug", "Sep", "Oct",
+                                     "Nov", "Dec"))
+
 
 ## clean up
 rm(list=ls(pattern = "^df\\.")[-grep("df.prec",ls(pattern = "^df\\."))])
@@ -128,4 +134,27 @@ p.ann.sum.prec <- p.ann.sum.prec +
            stat = "identity", position = "dodge") + ylab("Precip Depth (inches)") +
   facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
 plot(p.ann.sum.prec)
+
+## monthly sum
+df.tmp <- df.prec[df.prec$var == "mon_sum" &
+                    df.prec$par == "PREC", ]
+df.tmp$date <- as.POSIXct(strptime(paste0(df.tmp$year, "-", df.tmp$month, "-01"), 
+                format = "%Y-%b-%d"))
+p.mon.sum.prec <- 
+  ggplot(data = df.tmp)
+p.mon.sum.prec <- p.mon.sum.prec + 
+  geom_bar(aes(x = date, y = val, fill = period), 
+           stat = "identity", position = "dodge") + ylab("Precip Depth (inches)") +
+  facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
+plot(p.mon.sum.prec)
+rm(df.tmp)
+
+## monthly ave
+p.mon.ave.prec <- ggplot(data = df.prec[df.prec$var == "mon_ave" &
+                                          df.prec$par == "PREC", ])
+p.mon.ave.prec <- p.mon.ave.prec + 
+  geom_bar(aes(x = month, y = val, fill = period), 
+           stat = "identity", position = "dodge") + ylab("Precip Depth (inches)") +
+  facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
+plot(p.mon.ave.prec)
 
