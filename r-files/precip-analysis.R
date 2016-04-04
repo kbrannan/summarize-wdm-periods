@@ -5,6 +5,18 @@ library(tidyr, quietly = TRUE)
 library(dplyr, quietly = TRUE)
 library(dgof)
 
+## main path
+chr.bacteria.twg.17.dir <- "M:/Presentations/2016-02-09 Bacteria TWG 17"
+chr.table.charts.dir <- paste0(chr.bacteria.twg.17.dir, "/tables-charts-figures") 
+
+chr.sum.wdm.periods.dir <- paste0(chr.table.charts.dir,
+                                  "/summarize-wdm-periods")
+  "M:/Presentations/2016-02-09 Bacteria TWG 17/tables-charts-figures/summarize-wdm-periods"
+
+
+## get precip data
+source(paste0(chr.sum.wdm.periods.dir, 
+              "/r-files/general.R"))
 
 
 ## create single long format data frmae of met data
@@ -112,7 +124,11 @@ p.prec.daily <- p.prec.daily + geom_segment(aes(x = date, xend = date,
                                  y = 0, yend = val, color = period)) +
   facet_wrap(~station, ncol = 1, nrow = 2) + ylab("Precip Depth (inches)") +
   xlab("") + guides(color = FALSE)
+png(file = paste0(chr.table.charts.dir, "/prec-daily.png"), 
+    width = 480, height = 480, units = "px", pointsize = 12,
+    bg = "white", res = NA, family = "", restoreConsole = TRUE)
 plot(p.prec.daily)
+dev.off()
 
 ## annual ave
 p.ann.ave.prec <- ggplot(data = df.prec[df.prec$var == "ann_ave" &
@@ -125,7 +141,11 @@ p.ann.ave.prec <- p.ann.ave.prec +
                    labels = c("Orgnial", "Updated")) +
   geom_text(aes(x = period, y = 0.5 * val, label = sprintf(fmt = "%.1f",
                                                            round(val,1))))
+png(file = paste0(chr.table.charts.dir, "/prec-ann-ave.png"), 
+    width = 480, height = 480, units = "px", pointsize = 12,
+    bg = "white", res = NA, family = "", restoreConsole = TRUE)
 plot(p.ann.ave.prec)
+dev.off()
 
 ## annual sum
 p.ann.sum.prec <- ggplot(data = df.prec[df.prec$var == "ann_sum" &
@@ -134,7 +154,11 @@ p.ann.sum.prec <- p.ann.sum.prec +
   geom_bar(aes(x = year, y = val, fill = period), 
            stat = "identity", position = "dodge") + ylab("Precip Depth (inches)") +
   facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
+png(file = paste0(chr.table.charts.dir, "/prec-ann-sum.png"), 
+    width = 480, height = 480, units = "px", pointsize = 12,
+    bg = "white", res = NA, family = "", restoreConsole = TRUE)
 plot(p.ann.sum.prec)
+dev.off()
 
 ## monthly sum
 df.tmp <- df.prec[df.prec$var == "mon_sum" &
@@ -147,7 +171,11 @@ p.mon.sum.prec <- p.mon.sum.prec +
   geom_bar(aes(x = date, y = val, fill = period), 
            stat = "identity", position = "dodge") + ylab("Precip Depth (inches)") +
   facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
+png(file = paste0(chr.table.charts.dir, "/prec-mon-sum.png"), 
+    width = 480, height = 480, units = "px", pointsize = 12,
+    bg = "white", res = NA, family = "", restoreConsole = TRUE)
 plot(p.mon.sum.prec)
+dev.off()
 rm(df.tmp)
 
 ## monthly ave
@@ -157,7 +185,11 @@ p.mon.ave.prec <- p.mon.ave.prec +
   geom_bar(aes(x = month, y = val, fill = period), 
            stat = "identity", position = "dodge") + ylab("Precip Depth (inches)") +
   facet_wrap(~station, ncol = 1, nrow = 2) + guides(fill = FALSE)
+png(file = paste0(chr.table.charts.dir, "/prec-mon-ave.png"), 
+    width = 480, height = 480, units = "px", pointsize = 12,
+    bg = "white", res = NA, family = "", restoreConsole = TRUE)
 plot(p.mon.ave.prec)
+dev.off()
 
 ## cdf of daily sum (hyetograph)
 
