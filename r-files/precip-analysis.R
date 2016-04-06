@@ -94,7 +94,6 @@ df.prec <- rbind(cbind(var = "ann_ave", date = NA, month = NA, year = NA,
                  cbind(var = "day_sum", df.data)
 )
 
-
 ## need to change date back to POSIXct
 df.prec$date <- as.POSIXct(df.prec$date, origin = "1970-01-01 00:00.00")
 
